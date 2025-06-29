@@ -571,71 +571,75 @@ class MLEnhancedPairsTradingSystem:
     
     def plot_results(self, data, results):
         """Visualize backtest results with ML insights"""
-        fig, axes = plt.subplots(2, 2, figsize=(15, 12))
-        fig.suptitle('ML-Enhanced Pairs Trading Results', fontsize=16)
+        fig, axes = plt.subplots(2, 2, figsize=(14, 8))
+        fig.suptitle('ML-Enhanced Pairs Trading Results', fontsize=14)
         
         # Plot 1: Cumulative returns by pair
         ax1 = axes[0, 0]
         for pair_name, result in results.items():
             ax1.plot(result['cumulative_returns'], label=f"{pair_name} (ML: {result['ml_score']:.2f})")
-        ax1.set_title('Cumulative Returns by Pair')
-        ax1.set_xlabel('Date')
-        ax1.set_ylabel('Cumulative Return')
-        ax1.legend()
+        ax1.set_title('Cumulative Returns by Pair', fontsize=12)
+        ax1.set_xlabel('Date', fontsize=10)
+        ax1.set_ylabel('Cumulative Return', fontsize=10)
+        ax1.legend(fontsize=8, loc='best')
         ax1.grid(True, alpha=0.3)
+        ax1.tick_params(axis='both', labelsize=8)
         
         # Plot 2: Feature importance
         ax2 = axes[0, 1]
         if self.feature_importance:
-            features = list(self.feature_importance.keys())[:10]  # Top 10
+            features = list(self.feature_importance.keys())[:8]  # Top 8 to save space
             importances = [self.feature_importance[f] for f in features]
             y_pos = np.arange(len(features))
             ax2.barh(y_pos, importances)
             ax2.set_yticks(y_pos)
-            ax2.set_yticklabels(features)
-            ax2.set_xlabel('Importance')
-            ax2.set_title('ML Feature Importance (Top 10)')
+            ax2.set_yticklabels(features, fontsize=8)
+            ax2.set_xlabel('Importance', fontsize=10)
+            ax2.set_title('ML Feature Importance (Top 8)', fontsize=12)
             ax2.grid(True, alpha=0.3)
+            ax2.tick_params(axis='x', labelsize=8)
         
         # Plot 3: ML Score vs Actual Performance
         ax3 = axes[1, 0]
         ml_scores = [r['ml_score'] for r in results.values()]
         actual_returns = [r['total_return'] for r in results.values()]
-        ax3.scatter(ml_scores, actual_returns, s=100, alpha=0.6)
-        ax3.set_xlabel('ML Predicted Score')
-        ax3.set_ylabel('Actual Return')
-        ax3.set_title('ML Predictions vs Actual Performance')
+        ax3.scatter(ml_scores, actual_returns, s=80, alpha=0.6)
+        ax3.set_xlabel('ML Predicted Score', fontsize=10)
+        ax3.set_ylabel('Actual Return', fontsize=10)
+        ax3.set_title('ML Predictions vs Actual Performance', fontsize=12)
         ax3.grid(True, alpha=0.3)
+        ax3.tick_params(axis='both', labelsize=8)
         
         # Add trend line
         if len(ml_scores) > 1:
             z = np.polyfit(ml_scores, actual_returns, 1)
             p = np.poly1d(z)
-            ax3.plot(sorted(ml_scores), p(sorted(ml_scores)), "r--", alpha=0.8)
+            ax3.plot(sorted(ml_scores), p(sorted(ml_scores)), "r--", alpha=0.8, linewidth=1)
         
         # Plot 4: Performance metrics comparison
         ax4 = axes[1, 1]
-        metrics = ['Sharpe Ratio', 'Total Return', 'Win Rate']
+        metrics = ['Sharpe', 'Return %', 'Win %']
         x = np.arange(len(results))
         width = 0.25
         
         for i, metric in enumerate(metrics):
-            if metric == 'Sharpe Ratio':
+            if metric == 'Sharpe':
                 values = [r['sharpe_ratio'] for r in results.values()]
-            elif metric == 'Total Return':
+            elif metric == 'Return %':
                 values = [r['total_return'] * 100 for r in results.values()]
-            else:  # Win Rate
+            else:  # Win %
                 values = [r['win_rate'] * 100 for r in results.values()]
             
             ax4.bar(x + i * width, values, width, label=metric)
         
-        ax4.set_xlabel('Pair')
-        ax4.set_ylabel('Value')
-        ax4.set_title('Performance Metrics by Pair')
+        ax4.set_xlabel('Pair', fontsize=10)
+        ax4.set_ylabel('Value', fontsize=10)
+        ax4.set_title('Performance Metrics by Pair', fontsize=12)
         ax4.set_xticks(x + width)
-        ax4.set_xticklabels(results.keys(), rotation=45)
-        ax4.legend()
+        ax4.set_xticklabels(results.keys(), rotation=45, ha='right', fontsize=8)
+        ax4.legend(fontsize=8, loc='best')
         ax4.grid(True, alpha=0.3)
+        ax4.tick_params(axis='y', labelsize=8)
         
         plt.tight_layout()
         plt.show()
