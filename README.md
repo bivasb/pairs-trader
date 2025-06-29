@@ -1,10 +1,27 @@
-# Pairs Trading - Statistical Arbitrage Strategy
+# Pairs Trading - Statistical Arbitrage Strategy with ML Enhancement
 
-A comprehensive Python implementation of a pairs trading strategy for quantitative finance education. This project demonstrates key concepts in statistical arbitrage, cointegration testing, and systematic trading.
+A comprehensive Python implementation of a pairs trading strategy enhanced with Machine Learning for quantitative finance education. This project demonstrates the integration of traditional statistical arbitrage with modern ML techniques using Random Forest for pair selection and ranking.
 
 ## Overview
 
 This codebase implements a complete pairs trading system that identifies and trades mean-reverting relationships between cointegrated asset pairs. The strategy is based on the principle that certain asset pairs maintain stable long-term relationships, and deviations from these relationships present profitable trading opportunities.
+
+## 🚀 New: Machine Learning Enhancement
+
+The ML-enhanced version (`pairs-trading-ml.py`) adds:
+
+### ML-Powered Pair Selection
+- **Random Forest** model to predict pair profitability
+- **Feature Engineering** with 15+ indicators per pair
+- **Automated ranking** of pairs by expected performance
+- **Feature importance** analysis for interpretability
+
+### Advanced Features Extracted
+- Correlation metrics (multiple timeframes)
+- Mean reversion indicators (half-life, Hurst exponent)
+- Market regime features
+- Spread characteristics (skew, kurtosis)
+- Recent performance metrics
 
 ## Key Concepts Covered
 
@@ -48,6 +65,8 @@ Ensure you have Python 3.7+ installed. Install required dependencies:
 pip install numpy pandas scipy scikit-learn matplotlib statsmodels
 ```
 
+For the ML-enhanced version, you already have all required dependencies!
+
 ### Running the Code
 
 1. Clone or download the repository:
@@ -56,17 +75,23 @@ git clone https://github.com/yourusername/pairs-trading.git
 cd pairs-trading
 ```
 
-2. Run the main script:
+2. Run the basic version:
 ```bash
 python pairs-trading.py
 ```
 
+Or run the ML-enhanced version:
+```bash
+python pairs-trading-ml.py
+```
+
 The script will:
 - Generate synthetic correlated asset data
-- Identify cointegrated pairs
+- Identify cointegrated pairs (ML version: rank by predicted profitability)
 - Generate trading signals
 - Execute backtests with transaction costs
 - Display performance metrics and visualizations
+- (ML version) Show feature importance and ML model performance
 
 ### Expected Output
 
@@ -84,8 +109,8 @@ The program generates:
 
 ## 📁 Code Structure
 
+### Basic Version (pairs-trading.py)
 ```
-pairs-trading.py
 ├── StatisticalArbitrageSystem (Main Class)
 │   ├── generate_synthetic_data()    # Creates correlated price series
 │   ├── test_cointegration()         # Tests for cointegration
@@ -94,6 +119,19 @@ pairs-trading.py
 │   ├── backtest_pair()              # Simulates trading
 │   ├── run_full_backtest()          # Orchestrates full backtest
 │   └── plot_results()               # Creates visualizations
+└── Main execution block
+```
+
+### ML-Enhanced Version (pairs-trading-ml.py)
+```
+├── MLEnhancedPairsTradingSystem (Main Class)
+│   ├── All methods from basic version PLUS:
+│   ├── extract_pair_features()      # Engineer 15+ ML features
+│   ├── train_ml_model()             # Train Random Forest
+│   ├── rank_pairs_with_ml()         # ML-based pair ranking
+│   ├── calculate_half_life()        # Mean reversion speed
+│   ├── calculate_hurst_exponent()   # Trend vs mean reversion
+│   └── Enhanced plot_results()      # ML insights visualization
 └── Main execution block
 ```
 
@@ -137,12 +175,15 @@ This implementation is ideal for:
 ## Extending the Code
 
 Consider these enhancements:
-1. Use real market data (e.g., via barchart)
-2. Implement more sophisticated cointegration tests
-3. Add machine learning for pair selection
+1. Use real market data (e.g., via yfinance)
+2. Implement more sophisticated cointegration tests (Johansen test)
+3. ✅ **DONE**: Added machine learning for pair selection (see pairs-trading-ml.py)
 4. Include more risk metrics (VaR, CVaR)
 5. Add real-time trading capabilities
 6. Implement portfolio-level risk management
+7. Add deep learning models (LSTM for spread prediction)
+8. Implement reinforcement learning for dynamic thresholds
+9. Add sentiment analysis from news data
 
 ## Disclaimer
 
